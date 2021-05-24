@@ -50,7 +50,9 @@
     //                 avec le nom du controller . le nom de la méthode appellée
     $router->map( "GET", "/",                  "MainController@home",        "main.home"        ); // Route home
     $router->map( "GET", "/category/[i:id]",   "CatalogController@category", "catalog.category" ); // Route catégorie
-    
+    $router->map( "GET", "/catalogue/type/[i:id]",   "CatalogController@type", "catalog.type" ); // Route type
+    $router->map( "GET", "/catalogue/marque/[i:id]",   "CatalogController@mark", "catalog.mark" ); // Route marque
+    $router->map( "GET", "/catalogue/produit/[i:id]",   "CatalogController@product", "catalog.product" ); // Route catégorie
     // Ici, on demande a AltoRouter de récupérer les infos de la route qui 
     // 'match' (correspond) à l'URL actuellement demandée
     // Match ne fait QUE retourner les infos de la route qui correspond
