@@ -12,6 +12,21 @@
             $this->show( "product.list" );
         }
 
+        public function type ( $routeVarInfos ) 
+        {
+            $this->show( "product.list" );
+        }
+
+        public function mark ( $routeVarInfos )
+        {
+            $this->show( "product.list" );
+        }
+
+        public function product( $routeVarInfos )
+        {
+            $this->show( "product" );
+        }
+
         // Cette méthode n'est appellée QUE par le controleur via ses propres méthodes
         // et jamais depuis l'exéterieur, on peut la définir comme private
         private function show( $viewName, $viewVars = [] ) 
