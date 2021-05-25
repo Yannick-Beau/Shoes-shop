@@ -5,18 +5,20 @@
     // qu'on a piqué chez les copains dev avec Composer :D
     require_once __DIR__ . "/../vendor/autoload.php";
 
+    // On inclus nos utilitaires
+    require_once __DIR__ . "/../app/utils/Database.php";
+
     // On pense a inclure le fichier qui contient la classe MainController  
     require_once __DIR__ . "/../app/controllers/MainController.php";
     require_once __DIR__ . "/../app/controllers/CatalogController.php";
 
-    // On récupère notre partie "fixe" de l'URL
-    // Ici, le chemin entre localhost et le dossier S05-projet-oshop-blue
-    $baseURL = $_SERVER['BASE_URI'];
+    // On inclus nos Models
+    require_once __DIR__ . "/../app/models/Category.php";
 
-    // On récupère ensuite la partie "variable" de l'URL
-    // Ici, tout ce qui se trouve après "S05-projet-oshop-blue"
-    // C'est à cela qu'on va comparer nos URL de routes
-    $currentURL = $_GET['_url'] ?? "/";
+
+    // On récupère notre partie "fixe" de l'URL
+    // Ici, le chemin entre localhost et le dossier S05-projet-oshop-blue/public
+    // dump( $_SERVER['BASE_URI'] );
 
     //================== DISPATCHER ======================
     
@@ -26,7 +28,7 @@
     // On doit préciser a AltoRouter dans quel sous-dossier on se trouve
     // sinon il va essayer de faire correspondre les URL des routes
     // à partir de localhost/ (ou du nom de domaine en général)
-    $router->setBasePath( $baseURL );
+    $router->setBasePath( $_SERVER['BASE_URI'] );
 
     // On "mappe" nos routes
     // En gros, on dit a AltoRouter de mettre les routes
@@ -48,11 +50,17 @@
     //                 que l'ont sépare par un caractère spécial au choix (ici @)
     // 4eme argument : Nom de la route a titre indicatif. Par convention, on l'appelle
     //                 avec le nom du controller . le nom de la méthode appellée
-    $router->map( "GET", "/",                  "MainController@home",        "main.home"        ); // Route home
-    $router->map( "GET", "/category/[i:id]",   "CatalogController@category", "catalog.category" ); // Route catégorie
-    $router->map( "GET", "/catalogue/type/[i:id]",   "CatalogController@type", "catalog.type" ); // Route type
-    $router->map( "GET", "/catalogue/marque/[i:id]",   "CatalogController@mark", "catalog.mark" ); // Route marque
-    $router->map( "GET", "/catalogue/produit/[i:id]",   "CatalogController@product", "catalog.product" ); // Route catégorie
+    
+    // MainController
+    $router->map( "GET", "/",                  "MainController@home",        "main.home"        ); // Route accueil
+    $router->map( "GET", "/legal",             "MainController@legal",       "main.legal"       ); // Route mention légales
+    
+    // CatalogController
+    $router->map( "GET", "/category/[i:id]",   "CatalogController@category", "catalog.category" ); // Route articles par catégorie
+    $router->map( "GET", "/brand/[i:id]",      "CatalogController@brand",    "catalog.brand"    ); // Route articles par marque
+    $router->map( "GET", "/type/[i:id]",       "CatalogController@type",     "catalog.type"     ); // Route articles par type
+    $router->map( "GET", "/product/[i:id]",    "CatalogController@product",  "catalog.product"  ); // Route fiche produit
+    
     // Ici, on demande a AltoRouter de récupérer les infos de la route qui 
     // 'match' (correspond) à l'URL actuellement demandée
     // Match ne fait QUE retourner les infos de la route qui correspond
@@ -63,9 +71,18 @@
     //   "params" => Qui va contenir les variables de l'URL (un tableau vide s'il n'y en a pas),
     //   "name"   => Le nom de la route qui match
     // ]
-    // Si $router->match() ne trouve aucune route qui correspond, ici $routeInfo vaudra false (et ne sera donc pas un tableau)
+    // Si $router->match() ne trouve aucune route qui correspond, $routeInfo vaudra false (et ne sera donc pas un tableau)
     $routeInfo = $router->match();
-    dump( $routeInfo );
+    // dump( $routeInfo );
+
+    // Gestion des 404
+    if( $routeInfo === false ) :
+        // On aurait aussi pu gérer ça dans une méthodé
+        // error de MainController, voire faire un ErrorController
+        http_response_code( 404 );
+        echo "Page non trouvée (404 Not Found)";
+        exit(); // On arrêt ele script ici, on essaye pas de dispatch
+    endif;
 
     //================== DISPATCHER ======================
     // C'est celui qui instancie le bon controleur execute la méthode
@@ -76,7 +93,7 @@
     // On utilise la fonction explode de PHP qui va "découper" la chaine
     // et en faire un tableau qui contiendra les morceaux (sans le @)
     $routeInfoArray = explode( "@", $routeInfo['target'] );
-    dump( $routeInfoArray );
+    // dump( $routeInfoArray );
 
     // On repart comme avant, en récupérant nos deux noms
     $controllerName = $routeInfoArray[0]; // Nom du contrôleur

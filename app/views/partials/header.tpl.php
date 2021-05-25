@@ -3,9 +3,9 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-        <link rel="stylesheet" href="assets/css/font-awesome.min.css">
-        <link rel="stylesheet" href="assets/css/styles.css">
+        <link rel="stylesheet" href="<?= $_SERVER['BASE_URI'] ?>/assets/css/bootstrap.min.css">
+        <link rel="stylesheet" href="<?= $_SERVER['BASE_URI'] ?>/assets/css/font-awesome.min.css">
+        <link rel="stylesheet" href="<?= $_SERVER['BASE_URI'] ?>/assets/css/styles.css">
         <title>oShop</title>
     </head>
 
@@ -54,10 +54,19 @@
                 <div id="navbarCollapse" class="collapse navbar-collapse">
                     <ul class="navbar-nav mx-auto">
                         <li class="nav-item">
-                            <a href="index.html" class="nav-link active">Home</a>
+                            <a href="<?= $router->generate( 'main.home' ) ?>" class="nav-link active">
+                                Home
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">Catégories</a>
+                            <a href="<?= $router->generate( 'main.legal' ) ?>" class="nav-link active">
+                                Mentions légales
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= $router->generate( 'catalog.category', [ 'id' => 99 ] ) ?>" class="nav-link">
+                                Catégorie #99
+                            </a>
                         </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">Types de produit</a>
