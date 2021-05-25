@@ -5,9 +5,9 @@
 | URL | HTTP Method | Controller | Method | Title | Content | Comment |
 |--|--|--|--|--|--|--|
 | `/` | `GET` | `MainController` | `home` | Dans les shoe | 5 categories | - |
-| `/public-url/with-sub-folder/[and-dynamic-part]` | `GET` ou `POST` | `ControllerName` | `methodName` | Titre de la page | Description of page's content | Explain here the dynamics parts of your URL (`[]`) |
-|`/mentions-legales/`|`GET`|`MainController`|`legalNotice`|Mentions légales|list of legal notices| - |
-|`/catalogue/categorie/12`|`GET`|`CatalogController`|`category`|Dans les shoe|a page of articles of a desired category|[12] a number that represents a category|
-|`/catalogue/type/40`|`GET`|`CatalogController`|`type`|Dans les shoe|a page of articles of a desired type|[40] a number that represents a type|
-|`/catalogue/marque/2`|`GET`|`CatalogController`|`mark`|Dans les shoe|a page of articles of a desired mark|[2] a number that represents a mark|
-|`/catalogue/produit/4`|`GET`|`CatalogController`|`product`|Dans les shoe|a page of an article|[4] a number that represents a product|
+| `/legal`| `GET`| `MainController` | `legal` | Legal Mentions | Legal Mentions | - |
+| `/category/[i:id]` | `GET` | `CatalogController` | `category` | Dans les shoe | List products by category | (`[id]`) => : represents the id of the category |
+| `/type/[i:id]` | `GET` | `CatalogController` | `type` | #Name of the type# |  Products attached to the type | (`[id]`) => represents the id of the type |
+| `/brand/[i:id]` | `GET` | `CatalogController` | `brand` | #Name of the brand# | Products attached to the brand  | (`[id]`) => represents the id of the brand] |
+| `/product/[i:id]` | `GET` | `CatalogController` | `product` | #Name of the Product# | Product details | (`[id]`) => represent the id of the product |
+
