@@ -3,26 +3,19 @@
       <!-- Breadcrumbs -->
       <ol class="breadcrumb justify-content-center">
         <li class="breadcrumb-item">
-          <a href="index.html">
+          <a href="<?= $router->generate( 'main.home' ) ?>">
             Home
           </a>
         </li>
         <li class="breadcrumb-item active">
-          <?= $viewVars["category"]->getName() ?>
+          <?= $viewVars["brand"]->getName() ?>
         </li>
       </ol>
       <!-- Hero Content-->
       <div class="hero-content pb-5 text-center">
         <h1 class="hero-heading">
-          <?= $viewVars["category"]->getName() ?>
+          <?= $viewVars["brand"]->getName() ?>
         </h1>
-        <div class="row">
-          <div class="col-xl-8 offset-xl-2">
-            <p class="lead text-muted">
-              <?= $viewVars["category"]->getSubtitle() ?>
-            </p>
-          </div>
-        </div>
       </div>
     </div>
   </section>
@@ -74,7 +67,7 @@
             </div>
             <div class="py-2">
               <p class="text-muted text-sm mb-1">
-                Type #<?= $currentProduct->getTypeId() ?>
+                brand #<?= $currentProduct->getbrandId() ?>
               </p>
               <h3 class="h6 text-uppercase mb-1">
                 <a href="<?= $router->generate( 'catalog.product', [ 'id' => $currentProduct->getId() ] ) ?>" class="text-dark">

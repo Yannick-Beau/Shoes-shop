@@ -84,31 +84,13 @@
                                 Produits
                             </h6>
                             <ul class="list-unstyled">
-                                <li>
-                                    <a href="#" class="text-muted">
-                                        Chaussures de ville
+                            <?php foreach ( $viewVars['footerTypes'] as $type ) : ?>
+                                <li> 
+                                    <a href="<?= $router->generate( 'catalog.type', [ 'id' => $type->getId() ] ) ?>" class="text-muted">
+                                        <?= $type->getName(); ?>
                                     </a>
                                 </li>
-                                <li>
-                                    <a href="#" class="text-muted">
-                                        Chaussures de sport
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="text-muted">
-                                        Pantoufles
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="text-muted">
-                                        Tongs
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="text-muted">
-                                        Chaussons
-                                    </a>
-                                </li>
+                            <?php endforeach; ?>   
                             </ul>
                         </div>
                         <div class="col-lg-2 col-md-6 mb-5 mb-lg-0">
@@ -116,31 +98,13 @@
                                 Marques
                             </h6>
                             <ul class="list-unstyled">
+                            <?php foreach ( $viewVars['footerBrands'] as $brand ) : ?>
                                 <li> 
-                                    <a href="#" class="text-muted">
-                                        oCirage
+                                    <a href="<?= $router->generate( 'catalog.brand', [ 'id' => $brand->getId() ] ) ?>" class="text-muted">
+                                        <?= $brand->getName(); ?>
                                     </a>
                                 </li>
-                                <li> 
-                                    <a href="#" class="text-muted">
-                                        Shossures
-                                    </a>
-                                </li>
-                                <li> 
-                                    <a href="#" class="text-muted">
-                                        BOOTstrap
-                                    </a>
-                                </li>
-                                <li> 
-                                    <a href="#" class="text-muted">
-                                        Talonette
-                                    </a>
-                                </li>
-                                <li> 
-                                    <a href="#" class="text-muted">
-                                        oPompes
-                                    </a>
-                                </li>
+                            <?php endforeach; ?>    
                             </ul>
                         </div>
                         <div class="col-lg-4">
