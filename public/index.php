@@ -13,7 +13,11 @@
     require_once __DIR__ . "/../app/controllers/CatalogController.php";
 
     // On inclus nos Models
+    require_once __DIR__ . "/../app/models/CoreModel.php";
+    require_once __DIR__ . "/../app/models/Brand.php";
+    require_once __DIR__ . "/../app/models/Type.php";
     require_once __DIR__ . "/../app/models/Category.php";
+    require_once __DIR__ . "/../app/models/Product.php";
 
 
     // On récupère notre partie "fixe" de l'URL
