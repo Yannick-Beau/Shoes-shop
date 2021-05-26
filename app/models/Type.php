@@ -5,7 +5,7 @@
     //  - Un objet instancié de cette classe = une ligne dans la table (un enregistrement)
 
     // Nom de la classe = Nom de la table (sans les maj)
-    class Brand extends CoreModel
+    class Type extends CoreModel
     {
         //===========================================
         // Propriétés (=> champs de la table)
@@ -20,25 +20,25 @@
         public function find( $id ) 
         {
             $pdo = Database::getPDO();
-            $sql = "SELECT * FROM `brand` WHERE `id` = $id";
+            $sql = "SELECT * FROM `type` WHERE `id` = $id";
             $statement = $pdo->query( $sql );
-            return $statement->fetchObject( "Brand" );
+            return $statement->fetchObject( "Type" );
         }
         
         public function findAll() 
         { 
             $pdo = Database::getPDO();            
-            $sql = "SELECT * FROM `brand`";
+            $sql = "SELECT * FROM `type`";
             $statement = $pdo->query( $sql );            
-            return $statement->fetchAll( PDO::FETCH_CLASS, "Brand" );
+            return $statement->fetchAll( PDO::FETCH_CLASS, "Type" );
         }
         
         public function findForFooter() 
         {
             $pdo = Database::getPDO();            
-            $sql = "SELECT * FROM `brand` WHERE `footer_order` > 0 ORDER BY `footer_order` ASC";
+            $sql = "SELECT * FROM `type` WHERE `footer_order` > 0 ORDER BY `footer_order` ASC";
             $statement = $pdo->query( $sql );            
-            return $statement->fetchAll( PDO::FETCH_CLASS, "Brand" );
+            return $statement->fetchAll( PDO::FETCH_CLASS, "Type" );
         }
 
         //===========================================

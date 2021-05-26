@@ -5,16 +5,12 @@
     //  - Un objet instancié de cette classe = une ligne dans la table (un enregistrement)
 
     // Nom de la classe = Nom de la table (sans les maj)
-    class Category 
+    class Category extends CoreModel
     {
         // Propriétés (=> champs de la table)
-        private $id;
-        private $name;
         private $subtitle;
         private $picture;
         private $home_order;
-        private $created_at;
-        private $updated_at;
 
         // Méthodes (vont interagir avec la DB)
         public function find( $id )
@@ -78,20 +74,13 @@
             return $results;
         }
 
-        /**
-         * Get the value of updated_at
-         */ 
-        public function getUpdatedAt()
+        // TODO : Méthode find des 5 catégories de la home
+        public function findForHome()
         {
-            return $this->updated_at;
-        }
-
-        /**
-         * Get the value of created_at
-         */ 
-        public function getCreatedAt()
-        {
-            return $this->created_at;
+            $pdo = Database::getPDO();            
+            $sql = "SELECT * FROM `category` WHERE `home_order` > 0 ORDER BY `home_order` ASC";
+            $statement = $pdo->query( $sql );            
+            return $statement->fetchAll( PDO::FETCH_CLASS, "Category" );
         }
 
         /**
@@ -116,21 +105,5 @@
         public function getSubtitle()
         {
             return $this->subtitle;
-        }
-
-        /**
-         * Get the value of name
-         */ 
-        public function getName()
-        {
-            return $this->name;
-        }
-
-        /**
-         * Get the value of id
-         */ 
-        public function getId()
-        {
-            return $this->id;
         }
     }
