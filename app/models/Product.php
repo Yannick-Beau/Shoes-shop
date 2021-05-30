@@ -1,4 +1,9 @@
 <?php
+    namespace app\models;
+
+    use \app\utils\Database;
+    use \PDO;
+    
     // Dans le cadre de la méthode Active Record :
     //  - Un classe = Une entité dans le MCD = Une table en DB
     //  - Une propriété de cette classe = un champ de cette table
@@ -31,7 +36,7 @@
             $pdo = Database::getPDO();
             $sql = "SELECT * FROM `product` WHERE `id` = $id";
             $statement = $pdo->query( $sql );
-            return $statement->fetchObject( "Product" );
+            return $statement->fetchObject( "app\models\Product" );
         }
         
         public function findAll() 
@@ -39,7 +44,7 @@
             $pdo = Database::getPDO();            
             $sql = "SELECT * FROM `product`";
             $statement = $pdo->query( $sql );            
-            return $statement->fetchAll( PDO::FETCH_CLASS, "Product" );
+            return $statement->fetchAll( PDO::FETCH_CLASS, "app\models\Product" );
         }
 
         public function findByCategory( $category_id )
@@ -47,7 +52,7 @@
             $pdo = Database::getPDO();            
             $sql = "SELECT * FROM `product` WHERE `category_id` = $category_id";
             $statement = $pdo->query( $sql );            
-            return $statement->fetchAll( PDO::FETCH_CLASS, "Product" );
+            return $statement->fetchAll( PDO::FETCH_CLASS, "app\models\Product" );
         }
 
         //===========================================

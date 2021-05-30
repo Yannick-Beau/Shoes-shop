@@ -5,21 +5,6 @@
     // qu'on a piqué chez les copains dev avec Composer :D
     require_once __DIR__ . "/../vendor/autoload.php";
 
-    // On inclus nos utilitaires
-    require_once __DIR__ . "/../app/utils/Database.php";
-
-    // On pense a inclure le fichier qui contient la classe MainController  
-    require_once __DIR__ . "/../app/controllers/MainController.php";
-    require_once __DIR__ . "/../app/controllers/CatalogController.php";
-
-    // On inclus nos Models
-    require_once __DIR__ . "/../app/models/CoreModel.php";
-    require_once __DIR__ . "/../app/models/Brand.php";
-    require_once __DIR__ . "/../app/models/Type.php";
-    require_once __DIR__ . "/../app/models/Category.php";
-    require_once __DIR__ . "/../app/models/Product.php";
-
-
     // On récupère notre partie "fixe" de l'URL
     // Ici, le chemin entre localhost et le dossier S05-projet-oshop-blue/public
     // dump( $_SERVER['BASE_URI'] );
@@ -65,7 +50,7 @@
     $router->map( "GET", "/type/[i:id]",       "CatalogController@type",     "catalog.type"     ); // Route articles par type
     $router->map( "GET", "/product/[i:id]",    "CatalogController@product",  "catalog.product"  ); // Route fiche produit
     
-    // Ici, on demande a AltoRouter de récupérer les infos de la route qui 
+    // Ici, on demande a AltoRouter de récupérer les infos de la○ 
     // 'match' (correspond) à l'URL actuellement demandée
     // Match ne fait QUE retourner les infos de la route qui correspond
     // C'est a nous d'executer la bonne action (ici instancier le controller et call la méthode)
@@ -100,7 +85,8 @@
     // dump( $routeInfoArray );
 
     // On repart comme avant, en récupérant nos deux noms
-    $controllerName = $routeInfoArray[0]; // Nom du contrôleur
+    // Maintenant qu'on utilise des namespace, il faut préciser le FQCN de la classe
+    $controllerName = "app\\controllers\\".$routeInfoArray[0]; // Nom du contrôleur
     $methodName     = $routeInfoArray[1]; // Nom de la méthode
 
     // On instancie ensuite dynamiquement un controlleur dont le nom

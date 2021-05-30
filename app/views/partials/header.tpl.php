@@ -68,18 +68,6 @@
                                 Catégorie #1
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="<?= $router->generate( 'catalog.type', [ 'id' => 1 ] ) ?>" class="nav-link">Types de produit</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="<?= $router->generate( 'catalog.brand', [ 'id' => 1 ] ) ?>" class="nav-link">Marques</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">Blog</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">Contact</a>
-                        </li>
                     </ul>
 
                     <div class="d-flex align-items-center justify-content-between justify-content-lg-end mt-1 mb-2 my-lg-0">

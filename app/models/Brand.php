@@ -1,4 +1,9 @@
 <?php
+    namespace app\models;
+
+    use \app\utils\Database;
+    use \PDO;
+
     // Dans le cadre de la méthode Active Record :
     //  - Un classe = Une entité dans le MCD = Une table en DB
     //  - Une propriété de cette classe = un champ de cette table
@@ -22,7 +27,7 @@
             $pdo = Database::getPDO();
             $sql = "SELECT * FROM `brand` WHERE `id` = $id";
             $statement = $pdo->query( $sql );
-            return $statement->fetchObject( "Brand" );
+            return $statement->fetchObject( "app\models\Brand" );
         }
         
         public function findAll() 
@@ -30,7 +35,7 @@
             $pdo = Database::getPDO();            
             $sql = "SELECT * FROM `brand`";
             $statement = $pdo->query( $sql );            
-            return $statement->fetchAll( PDO::FETCH_CLASS, "Brand" );
+            return $statement->fetchAll( PDO::FETCH_CLASS, "app\models\Brand" );
         }
         
         public function findForFooter() 
@@ -38,7 +43,7 @@
             $pdo = Database::getPDO();            
             $sql = "SELECT * FROM `brand` WHERE `footer_order` > 0 ORDER BY `footer_order` ASC";
             $statement = $pdo->query( $sql );            
-            return $statement->fetchAll( PDO::FETCH_CLASS, "Brand" );
+            return $statement->fetchAll( PDO::FETCH_CLASS, "\app\models\Brand" );
         }
 
         //===========================================

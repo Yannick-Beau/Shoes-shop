@@ -84,13 +84,13 @@
                                 Produits
                             </h6>
                             <ul class="list-unstyled">
-                            <?php foreach ( $viewVars['footerTypes'] as $type ) : ?>
+                                <?php foreach( $viewVars['common']['footerTypes'] as $type ) : ?>
                                 <li> 
-                                    <a href="<?= $router->generate( 'catalog.type', [ 'id' => $type->getId() ] ) ?>" class="text-muted">
+                                    <a href="<?= $router->generate( "catalog.type", [ "id" => $type->getId() ] ) ?>" class="text-muted">
                                         <?= $type->getName(); ?>
                                     </a>
                                 </li>
-                            <?php endforeach; ?>   
+                                <?php endforeach; ?>
                             </ul>
                         </div>
                         <div class="col-lg-2 col-md-6 mb-5 mb-lg-0">
@@ -98,13 +98,13 @@
                                 Marques
                             </h6>
                             <ul class="list-unstyled">
-                            <?php foreach ( $viewVars['footerBrands'] as $brand ) : ?>
+                                <?php foreach( $viewVars['common']['footerBrands'] as $brand ) : ?>
                                 <li> 
-                                    <a href="<?= $router->generate( 'catalog.brand', [ 'id' => $brand->getId() ] ) ?>" class="text-muted">
+                                    <a href="<?= $router->generate( "catalog.brand", [ "id" => $brand->getId() ] ) ?>" class="text-muted">
                                         <?= $brand->getName(); ?>
                                     </a>
                                 </li>
-                            <?php endforeach; ?>    
+                                <?php endforeach; ?>
                             </ul>
                         </div>
                         <div class="col-lg-4">

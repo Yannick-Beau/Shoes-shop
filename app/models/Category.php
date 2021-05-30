@@ -1,4 +1,9 @@
 <?php
+    namespace app\models;
+
+    use \app\utils\Database;
+    use \PDO;
+    
     // Dans le cadre de la méthode Active Record :
     //  - Un classe = Une entité dans le MCD = Une table en DB
     //  - Une propriété de cette classe = un champ de cette table
@@ -32,7 +37,7 @@
             // dump( $statement );
 
             // Etape 4 : on fetch le(s) résultat(s)
-            $result = $statement->fetchObject( "Category" );
+            $result = $statement->fetchObject( "app\models\Category" );
             // Grace a PDO et fetchObject(), $result sera un objet
             // de type Category, avec des propriétés automatiquement
             // renseignées par PDO pour correspondre aux valeurs
@@ -62,7 +67,7 @@
             // dump( $statement );
 
             // Etape 4 : on fetch le(s) résultat(s)
-            $results = $statement->fetchAll( PDO::FETCH_CLASS, "Category" );
+            $results = $statement->fetchAll( PDO::FETCH_CLASS, "app\models\Category" );
 
             // Grace a PDO et fetchObject(), $results sera un tableau d'objets
             // de type Category, avec des propriétés automatiquement
@@ -80,7 +85,7 @@
             $pdo = Database::getPDO();            
             $sql = "SELECT * FROM `category` WHERE `home_order` > 0 ORDER BY `home_order` ASC";
             $statement = $pdo->query( $sql );            
-            return $statement->fetchAll( PDO::FETCH_CLASS, "Category" );
+            return $statement->fetchAll( PDO::FETCH_CLASS, "app\models\Category" );
         }
 
         /**
