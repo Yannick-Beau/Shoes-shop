@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Nunito+Sans:opsz,wght@6..12,400..800&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#FCFAF6;color:#2B2320;font-family:'Nunito Sans','Segoe UI',Arial,sans-serif;}
+a{color:#722F37;}a:hover{color:#5C242B;}
+*{box-sizing:border-box;}
+input::placeholder,textarea::placeholder{color:#8A7C72;opacity:1;font-family:'Nunito Sans','Segoe UI',Arial,sans-serif;}
+[data-cavnet-theme]{transition:background-color 200ms ease, color 200ms ease, border-color 200ms ease, box-shadow 200ms ease;}
+[data-cavnet-theme] *{transition:background-color 200ms ease, color 200ms ease, border-color 200ms ease, box-shadow 200ms ease;}
+[data-cavnet-theme="clair"]{
+  --bg:#FCFAF6; --surface:#FFFFFF; --border:#E9E1D6; --primary:#722F37; --primary-hover:#5C242B;
+  --text:#2B2320; --text-secondary:#8A7C72; --accent:#C9A876; --on-primary:#F5EDE4;
+  --shadow:0 2px 10px rgba(43,35,32,0.05); --secondary-border:#722F37; --secondary-text:#722F37;
+  --secondary-hover-bg:rgba(114,47,55,0.06); --maybe-text:#A8813F; --badge-non-bg:#E9E1D6;
+  --badge-non-text:#8A7C72; --avatar-bg:#F5EDE4; --avatar-text:#722F37; --overlay:rgba(43,35,32,0.45);
+}
+[data-cavnet-theme="sombre"]{
+  --bg:#211B18; --surface:#2B2320; --border:#3E342E; --primary:#A85A64; --primary-hover:#B96C76;
+  --text:#F5EDE4; --text-secondary:#B3A69B; --accent:#C9A876; --on-primary:#F5EDE4;
+  --shadow:none; --secondary-border:#C9A876; --secondary-text:#C9A876;
+  --secondary-hover-bg:rgba(201,168,118,0.08); --maybe-text:#C9A876; --badge-non-bg:#3E342E;
+  --badge-non-text:#B3A69B; --avatar-bg:#3E342E; --avatar-text:#F5EDE4; --overlay:rgba(0,0,0,0.5);
+  --fab-shadow:0 4px 16px rgba(0,0,0,0.35);
+}
+[data-cavnet-theme="clair"]{ --fab-shadow:0 4px 16px rgba(43,35,32,0.18); }
+.cavnet-add-fab{display:none;}
+.cavnet-list-pad, .cavnet-empty-pad{padding-bottom:0;}
+@media (max-width:699px){
+  .cavnet-add-header{display:none !important;}
+  .cavnet-add-fab{display:flex !important;}
+  .cavnet-list-pad, .cavnet-empty-pad{padding-bottom:88px;}
+}
+@media (prefers-reduced-motion:reduce){
+  .cavnet-add-fab{transition:none !important;}
+}
+</style>
+</helmet>
+
+<div style="min-height:100vh;background:#FCFAF6;">
+
+<!-- Écran de connexion (toujours clair) -->
+<sc-if value="{{ showLogin }}" hint-placeholder-val="{{ true }}">
+  <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;">
+    <div style="width:100%;max-width:380px;background:#FFFFFF;border:1px solid #E9E1D6;border-radius:16px;box-shadow:0 2px 10px rgba(43,35,32,0.05);padding:36px 32px;display:flex;flex-direction:column;gap:24px;align-items:center;text-align:center;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <svg width="40" height="40" viewBox="0 0 96 96" aria-label="Cavnet">
+          <circle cx="48" cy="48" r="48" fill="#722F37"></circle>
+          <path d="M 69.2,26.8 A 30,30 0 1 0 69.2,69.2" fill="none" stroke="#F5EDE4" stroke-width="13" stroke-linecap="round"></path>
+          <path d="M0,-8.5 C4.6,-2.2 7.2,1.6 7.2,5 A7.2,7.2 0 1 1 -7.2,5 C-7.2,1.6 -4.6,-2.2 0,-8.5 Z" fill="#C9A876" transform="translate(62,49)"></path>
+        </svg>
+        <span style="font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:24px;letter-spacing:-0.01em;color:#2B2320;">Cavnet</span>
+      </div>
+      <div>
+        <div style="font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:22px;letter-spacing:-0.01em;color:#2B2320;margin-bottom:6px;">Content de te revoir</div>
+        <div style="font-size:15.5px;line-height:25px;color:#8A7C72;">Connecte-toi pour retrouver ton carnet.</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px;width:100%;">
+        <label style="display:flex;flex-direction:column;gap:8px;text-align:left;">
+          <span style="font-size:12.5px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#8A7C72;">E-mail</span>
+          <input type="email" placeholder="toi@exemple.com"
+            style="background:#FFFFFF;border:1.5px solid #E9E1D6;border-radius:12px;padding:11px 16px;font-family:'Nunito Sans','Segoe UI',Arial,sans-serif;font-size:15.5px;color:#2B2320;outline:none;"
+            style-focus="border-color:#C9A876;">
+        </label>
+        <label style="display:flex;flex-direction:column;gap:8px;text-align:left;">
+          <span style="font-size:12.5px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#8A7C72;">Mot de passe</span>
+          <input type="password" placeholder="••••••••"
+            style="background:#FFFFFF;border:1.5px solid #E9E1D6;border-radius:12px;padding:11px 16px;font-family:'Nunito Sans','Segoe UI',Arial,sans-serif;font-size:15.5px;color:#2B2320;outline:none;"
+            style-focus="border-color:#C9A876;">
+        </label>
+      </div>
+      <button onClick="{{ login }}"
+        style="width:100%;background:#722F37;color:#F5EDE4;border:none;border-radius:999px;padding:12px 24px;font-family:'Nunito Sans','Segoe UI',Arial,sans-serif;font-weight:800;font-size:14.5px;cursor:pointer;"
+        style-hover="background:#5C242B;"
+        style-focus="outline:2px solid #C9A876;outline-offset:2px;">Se connecter</button>
+      <div style="font-size:14px;color:#8A7C72;">Pas encore de compte ? <a href="#" onClick="{{ goToSignup }}" style="color:#722F37;font-weight:700;">Crée-en un</a></div>
+    </div>
+  </div>
+</sc-if>
+
+<!-- Écran de création de compte (toujours clair) -->
+<sc-if value="{{ showSignup }}" hint-placeholder-val="{{ false }}">
+  <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;">
+    <div style="width:100%;max-width:380px;background:#FFFFFF;border:1px solid #E9E1D6;border-radius:16px;box-shadow:0 2px 10px rgba(43,35,32,0.05);padding:36px 32px;display:flex;flex-direction:column;gap:24px;align-items:center;text-align:center;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <svg width="40" height="40" viewBox="0 0 96 96" aria-label="Cavnet">
+          <circle cx="48" cy="48" r="48" fill="#722F37"></circle>
+          <path d="M 69.2,26.8 A 30,30 0 1 0 69.2,69.2" fill="none" stroke="#F5EDE4" stroke-width="13" stroke-linecap="round"></path>
+          <path d="M0,-8.5 C4.6,-2.2 7.2,1.6 7.2,5 A7.2,7.2 0 1 1 -7.2,5 C-7.2,1.6 -4.6,-2.2 0,-8.5 Z" fill="#C9A876" transform="translate(62,49)"></path>
+        </svg>
+        <span style="font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:24px;letter-spacing:-0.01em;color:#2B2320;">Cavnet</span>
+      </div>
+      <div>
+        <div style="font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:22px;letter-spacing:-0.01em;color:#2B2320;margin-bottom:6px;">Bienvenue</div>
+        <div style="font-size:15.5px;line-height:25px;color:#8A7C72;">Crée ton compte pour commencer ton carnet.</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px;width:100%;">
+        <label style="display:flex;flex-direction:column;gap:8px;text-align:left;">
+          <span style="font-size:12.5px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#8A7C72;">Prénom</span>
+          <input type="text" placeholder="Ton prénom"
+            style="background:#FFFFFF;border:1.5px solid #E9E1D6;border-radius:12px;padding:11px 16px;font-family:'Nunito Sans','Segoe UI',Arial,sans-serif;font-size:15.5px;color:#2B2320;outline:none;"
+            style-focus="border-color:#C9A876;">
+        </label>
+        <label style="display:flex;flex-direction:column;gap:8px;text-align:left;">
+          <span style="font-size:12.5px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#8A7C72;">E-mail</span>
+          <input type="email" placeholder="toi@exemple.com"
+            style="background:#FFFFFF;border:1.5px solid #E9E1D6;border-radius:12px;padding:11px 16px;font-family:'Nunito Sans','Segoe UI',Arial,sans-serif;font-size:15.5px;color:#2B2320;outline:none;"
+            style-focus="border-color:#C9A876;">
+        </label>
+        <label style="display:flex;flex-direction:column;gap:8px;text-align:left;">
+          <span style="font-size:12.5px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#8A7C72;">Mot de passe</span>
+          <input type="password" placeholder="••••••••"
+            style="background:#FFFFFF;border:1.5px solid #E9E1D6;border-radius:12px;padding:11px 16px;font-family:'Nunito Sans','Segoe UI',Arial,sans-serif;font-size:15.5px;color:#2B2320;outline:none;"
+            style-focus="border-color:#C9A876;">
+        </label>
+        <label style="display:flex;flex-direction:column;gap:8px;text-align:left;">
+          <span style="font-size:12.5px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#8A7C72;">Confirmer le mot de passe</span>
+          <input type="password" placeholder="••••••••"
+            style="background:#FFFFFF;border:1.5px solid #E9E1D6;border-radius:12px;padding:11px 16px;font-family:'Nunito Sans','Segoe UI',Arial,sans-serif;font-size:15.5px;color:#2B2320;outline:none;"
+            style-focus="border-color:#C9A876;">
+        </label>
+      </div>
+      <button onClick="{{ login }}"
+        style="width:100%;background:#722F37;color:#F5EDE4;border:none;border-radius:999px;padding:12px 24px;font-family:'Nunito Sans','Segoe UI',Arial,sans-serif;font-weight:800;font-size:14.5px;cursor:pointer;"
+        style-hover="background:#5C242B;"
+        style-focus="outline:2px solid #C9A876;outline-offset:2px;">Créer mon compte</button>
+      <div style="font-size:14px;color:#8A7C72;">Déjà un compte ? <a href="#" onClick="{{ goToLogin }}" style="color:#722F37;font-weight:700;">Se connecter</a></div>
+    </div>
+  </div>
+</sc-if>
+
+<!-- App (clair/sombre) -->
+<sc-if value="{{ showApp }}" hint-placeholder-val="{{ false }}">
+<div data-cavnet-theme="{{ themeAttr }}" style="min-height:100vh;background:var(--bg);">
+<div style="max-width:1060px;margin:0 auto;padding:28px 24px 64px;">
+
+  <!-- En-tête -->
+  <header style="display:flex;flex-direction:column;gap:18px;margin-bottom:44px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <sc-if value="{{ isDark }}" hint-placeholder-val="{{ false }}">
+          <svg width="40" height="40" viewBox="0 0 96 96" aria-label="Cavnet">
+            <circle cx="48" cy="48" r="48" fill="#F5EDE4"></circle>
+            <path d="M 69.2,26.8 A 30,30 0 1 0 69.2,69.2" fill="none" stroke="#722F37" stroke-width="13" stroke-linecap="round"></path>
+            <path d="M0,-8.5 C4.6,-2.2 7.2,1.6 7.2,5 A7.2,7.2 0 1 1 -7.2,5 C-7.2,1.6 -4.6,-2.2 0,-8.5 Z" fill="#C9A876" transform="translate(62,49)"></path>
+          </svg>
+        </sc-if>
+        <sc-if value="{{ isLight }}" hint-placeholder-val="{{ true }}">
+          <svg width="40" height="40" viewBox="0 0 96 96" aria-label="Cavnet">
+            <circle cx="48" cy="48" r="48" fill="#722F37"></circle>
+            <path d="M 69.2,26.8 A 30,30 0 1 0 69.2,69.2" fill="none" stroke="#F5EDE4" stroke-width="13" stroke-linecap="round"></path>
+            <path d="M0,-8.5 C4.6,-2.2 7.2,1.6 7.2,5 A7.2,7.2 0 1 1 -7.2,5 C-7.2,1.6 -4.6,-2.2 0,-8.5 Z" fill="#C9A876" transform="translate(62,49)"></path>
+          </svg>
+        </sc-if>
+        <span style="font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:24px;letter-spacing:-0.01em;color:var(--text);">Cavnet</span>
+      </div>
+      <button onClick="{{ openProfile }}" aria-label="Profil" title="Profil"
+        style="width:44px;height:44px;border-radius:999px;background:var(--avatar-bg);color:var(--avatar-text);border:2px solid var(--bg);box-shadow:0 0 0 1.5px var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-family:'Nunito Sans','Segoe UI',Arial,sans-serif;font-weight:800;font-size:14.5px;flex-shrink:0;"
+        style-hover="box-shadow:0 0 0 1.5px var(--accent);"
+        style-focus="outline:2px solid #C9A876;outline-offset:2px;">{{ initials }}</button>
+    </div>
+    <button onClick="{{ openModal }}" class="cavnet-add-header"
+      style="align-self:flex-end;background:var(--primary);color:var(--on-primary);border:none;border-radius:999px;padding:12px 24px;font-family:'Nunito Sans','Segoe UI',Arial,sans-serif;font-weight:800;font-size:14.5px;cursor:pointer;white-space:nowrap;"
+      style-hover="background:var(--primary-hover);"
+      style-focus="outline:2px solid #C9A876;outline-offset:2px;">Ajouter une dégustation</button>
+  </header>
+
+  <!-- Bouton flottant (mobile uniquement) -->
+  <button onClick="{{ openModal }}" class="cavnet-add-fab" aria-label="Ajouter une dégustation" style="{{ fabStyle }}" style-hover="background:var(--primary-hover);" style-focus="outline:2px solid #C9A876;outline-offset:2px;">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F5EDE4" stroke-width="3" stroke-linecap="round" style="flex-shrink:0;">
+      <line x1="12" y1="5" x2="12" y2="19"></line>
+      <line x1="5" y1="12" x2="19" y2="12"></line>
+    </svg>
+    <sc-if value="{{ fabExpanded }}" hint-placeholder-val="{{ true }}">
+      <span style="white-space:nowrap;">Ajouter</span>
+    </sc-if>
+  </button>
+
+  <!-- Titre -->
+  <div style="margin-bottom:28px;">
+    <h1 style="margin:0 0 8px;font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:40px;line-height:44px;letter-spacing:-0.01em;color:var(--text);">Mes dégustations</h1>
+    <div style="font-size:12.5px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-secondary);">{{ countLabel }}</div>
+  </div>
+
+  <!-- Barre d'outils -->
+  <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:28px;">
+    <div style="position:relative;max-width:420px;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8A7C72" stroke-width="2.2" stroke-linecap="round" style="position:absolute;left:15px;top:50%;transform:translateY(-50%);pointer-events:none;">
+        <circle cx="10.5" cy="10.5" r="7"></circle>
+        <line x1="16" y1="16" x2="21" y2="21"></line>
+      </svg>
+      <input type="text" value="{{ query }}" onChange="{{ setQuery }}" placeholder="Rechercher un vin..." aria-label="Rechercher un vin"
+        style="width:100%;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:11px 16px 11px 40px;font-family:'Nunito Sans','Segoe UI',Arial,sans-serif;font-size:15.5px;line-height:25px;color:var(--text);outline:none;"
+        style-focus="border-color:#C9A876;">
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;" role="group" aria-label="Filtrer par type">
+      <sc-for list="{{ chips }}" as="chip" hint-placeholder-count="5">
+        <sc-if value="{{ chip.selected }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ chip.select }}"
+            style="background:var(--primary);color:var(--on-primary);border:1.5px solid var(--primary);border-radius:999px;padding:8px 18px;font-family:'Nunito Sans','Segoe UI',Arial,sans-serif;font-weight:700;font-size:14px;cursor:pointer;"
+            style-focus="outline:2px solid #C9A876;outline-offset:2px;">{{ chip.label }}</button>
+        </sc-if>
+        <sc-if value="{{ chip.unselected }}" hint-placeholder-val="{{ true }}">
+          <button onClick="{{ chip.select }}"
+            style="background:var(--surface);color:var(--text);border:1.5px solid var(--border);border-radius:999px;padding:8px 18px;font-family:'Nunito Sans','Segoe UI',Arial,sans-serif;font-weight:700;font-size:14px;cursor:pointer;"
+            style-hover="border-color:#C9A876;"
+            style-focus="outline:2px solid #C9A876;outline-offset:2px;">{{ chip.label }}</button>
+        </sc-if>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- Liste de cartes -->
+  <div class="cavnet-list-pad" style="display:flex;flex-direction:column;gap:14px;">
+    <sc-for list="{{ wines }}" as="wine" hint-placeholder-count="6">
+      <article style="background:var(--surface);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow);padding:20px;display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;gap:16px;align-items:center;">
+          <div style="width:72px;height:72px;border-radius:12px;background:var(--avatar-bg);flex-shrink:0;display:flex;align-items:center;justify-content:center;">
+            <svg width="30" height="30" viewBox="-12 -12 24 24" aria-hidden="true">
+              <path d="M0,-8.5 C4.6,-2.2 7.2,1.6 7.2,5 A7.2,7.2 0 1 1 -7.2,5 C-7.2,1.6 -4.6,-2.2 0,-8.5 Z" fill="#C9A876"></path>
+            </svg>
+          </div>
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:5px;">
+            <div style="font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:18px;letter-spacing:-0.01em;color:var(--text);">{{ wine.name }}</div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:14px;color:var(--text-secondary);font-weight:700;">
+              <span style="width:9px;height:9px;border-radius:999px;background:{{ wine.dotColor }};display:inline-block;"></span>
+              <span>{{ wine.typeLine }}</span>
+            </div>
+            <div style="font-size:15.5px;line-height:25px;color:var(--text);">{{ wine.note }}</div>
+          </div>
+          <div style="align-self:flex-start;font-family:'Nunito Sans','Segoe UI',Arial,sans-serif;font-weight:800;font-size:15.5px;color:var(--text);white-space:nowrap;">{{ wine.priceLabel }}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;border-top:1px solid var(--border);padding-top:14px;">
+          <div style="display:flex;gap:3px;" aria-label="{{ wine.ratingLabel }}">
+            <sc-for list="{{ wine.stars }}" as="s" hint-placeholder-count="5">
+              <sc-if value="{{ s.filled }}" hint-placeholder-val="{{ true }}">
+                <svg width="16" height="16" viewBox="0 0 24 24"><path d="M12 2l2.9 6.2 6.6.8-4.9 4.6 1.3 6.5-5.9-3.3-5.9 3.3 1.3-6.5-4.9-4.6 6.6-.8z" fill="{{ wine.starColor }}"></path></svg>
+              </sc-if>
+              <sc-if value="{{ s.empty }}" hint-placeholder-val="{{ false }}">
+                <svg width="16" height="16" viewBox="0 0 24 24"><path d="M12 2l2.9 6.2 6.6.8-4.9 4.6 1.3 6.5-5.9-3.3-5.9 3.3 1.3-6.5-4.9-4.6 6.6-.8z" fill="none" stroke="#C9A876" stroke-width="1.8"></path></svg>
+              </sc-if>
+            </sc-for>
+          </div>
+          <span style="{{ wine.badgeStyle }}">{{ wine.badgeText }}</span>
+          <div style="display:flex;gap:6px;margin-left:auto;">
+            <button onClick="{{ wine.edit }}" aria-label="Modifier" title="Modifier"
+              style="background:transparent;border:none;border-radius:999px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-secondary);"
+              style-hover="background:var(--secondary-hover-bg);color:var(--secondary-text);"
+              style-focus="outline:2px solid #C9A876;outline-offset:2px;">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 20h9"></path>
+                <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"></path>
+              </svg>
+            </button>
+            <button onClick="{{ wine.remove }}" aria-label="Supprimer" title="Supprimer"
+              style="background:transparent;border:none;border-radius:999px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-secondary);"
+              style-hover="background:var(--border);color:var(--text);"
+              style-focus="outline:2px solid #C9A876;outline-offset:2px;">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 6h18"></path>
+                <path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2"></path>
+                <path d="M19 6l-1 14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1L5 6"></path>
+                <path d="M10 11v6"></path>
+                <path d="M14 11v6"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </article>
+    </sc-for>
+  </div>
+
+  <!-- État vide -->
+  <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+    <div class="cavnet-empty-pad" style="display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;padding:64px 24px;">
+      <svg width="44" height="44" viewBox="-12 -12 24 24" aria-hidden="true">
+        <path d="M0,-8.5 C4.6,-2.2 7.2,1.6 7.2,5 A7.2,7.2 0 1 1 -7.2,5 C-7.2,1.6 -4.6,-2.2 0,-8.5 Z" fill="#C9A876"></path>
+      </svg>
+      <div style="font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:22px;letter-spacing:-0.01em;color:var(--text);">Aucun vin ici pour l'instant</div>
+      <div style="font-size:15.5px;line-height:25px;color:var(--text-secondary);max-width:380px;">Ta prochaine belle bouteille attend d'être notée.</div>
+      <button onClick="{{ openModal }}"
+        style="background:transparent;color:var(--secondary-text);border:1.5px solid var(--secondary-border);border-radius:999px;padding:12px 24px;font-family:'Nunito Sans','Segoe UI',Arial,sans-serif;font-weight:800;font-size:14.5px;cursor:pointer;"
+        style-hover="background:var(--secondary-hover-bg);"
+        style-focus="outline:2px solid #C9A876;outline-offset:2px;">Ajouter une dégustation</button>
+    </div>
+  </sc-if>
+
+</div>
+
+<!-- Modale profil -->
+<sc-if value="{{ profileOpen }}" hint-placeholder-val="{{ false }}">
+  <div onClick="{{ closeProfile }}" style="position:fixed;inset:0;background:var(--overlay);display:flex;align-items:center;justify-content:center;padding:20px;z-index:60;">
+    <div onClick="{{ stopClick }}" role="dialog" aria-label="Profil" style="background:var(--surface);border-radius:16px;box-shadow:var(--shadow);max-width:360px;width:100%;padding:28px;display:flex;flex-direction:column;gap:22px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+        <h2 style="margin:0;font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:26px;line-height:32px;letter-spacing:-0.01em;color:var(--text);">Profil</h2>
+        <button onClick="{{ closeProfile }}" aria-label="Fermer"
+          style="background:transparent;border:none;color:var(--text-secondary);font-size:20px;cursor:pointer;padding:6px 10px;border-radius:999px;line-height:1;"
+          style-hover="background:var(--border);"
+          style-focus="outline:2px solid #C9A876;outline-offset:2px;">✕</button>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:14px;">
+        <div style="width:52px;height:52px;border-radius:999px;background:var(--avatar-bg);color:var(--avatar-text);display:flex;align-items:center;justify-content:center;font-family:'Nunito Sans','Segoe UI',Arial,sans-serif;font-weight:800;font-size:17px;flex-shrink:0;">{{ initials }}</div>
+        <div style="min-width:0;">
+          <div style="font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:17px;letter-spacing:-0.01em;color:var(--text);">{{ userName }}</div>
+          <div style="font-size:14px;color:var(--text-secondary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ userEmail }}</div>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+        <div>
+          <div style="font-size:12.5px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-secondary);margin-bottom:4px;">Apparence</div>
+          <div style="font-family:'Nunito Sans','Segoe UI',Arial,sans-serif;font-weight:700;font-size:15px;color:var(--text);">{{ themeLabel }}</div>
+        </div>
+        <button onClick="{{ toggleTheme }}" role="switch" aria-checked="{{ isDark }}" aria-label="Basculer le thème clair ou sombre"
+          style="position:relative;width:60px;height:32px;border-radius:999px;background:var(--border);border:none;cursor:pointer;padding:0;flex-shrink:0;">
+          <span style="position:absolute;left:8px;top:50%;transform:translateY(-50%);display:flex;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="{{ sunColor }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="4"></circle>
+              <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path>
+            </svg>
+          </span>
+          <span style="position:absolute;right:8px;top:50%;transform:translateY(-50%);display:flex;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="{{ moonColor }}" stroke="none">
+              <path d="M20 14.5a8 8 0 1 1-8.5-9.9 6.5 6.5 0 0 0 8.5 9.9z"></path>
+            </svg>
+          </span>
+          <span style="position:absolute;top:3px;left:{{ knobLeft }};width:26px;height:26px;border-radius:999px;background:var(--primary);box-shadow:0 1px 4px rgba(43,35,32,0.25);transition:left 200ms ease;"></span>
+        </button>
+      </div>
+
+      <button onClick="{{ openSettings }}"
+        style="display:flex;align-items:center;gap:12px;background:transparent;border:none;padding:10px 4px;font-family:'Nunito Sans','Segoe UI',Arial,sans-serif;font-weight:700;font-size:15px;color:var(--text);cursor:pointer;text-align:left;border-radius:12px;"
+        style-hover="background:var(--bg);"
+        style-focus="outline:2px solid #C9A876;outline-offset:2px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09A1.65 1.65 0 0 0 15 4.6a1.65 1.65 0 0 0 1.82.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+        Paramètres
+      </button>
+
+      <button onClick="{{ logout }}"
+        style="background:transparent;color:var(--secondary-text);border:1.5px solid var(--secondary-border);border-radius:999px;padding:12px 24px;font-family:'Nunito Sans','Segoe UI',Arial,sans-serif;font-weight:800;font-size:14.5px;cursor:pointer;"
+        style-hover="background:var(--secondary-hover-bg);"
+        style-focus="outline:2px solid #C9A876;outline-offset:2px;">Se déconnecter</button>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ confirmOpen }}" hint-placeholder-val="{{ false }}">
+  <div onClick="{{ cancelDelete }}" style="position:fixed;inset:0;background:var(--overlay);display:flex;align-items:center;justify-content:center;padding:20px;z-index:60;">
+    <div onClick="{{ stopClick }}" role="dialog" aria-label="Confirmer la suppression" style="background:var(--surface);border-radius:16px;box-shadow:var(--shadow);max-width:400px;width:100%;padding:32px;display:flex;flex-direction:column;gap:14px;text-align:center;align-items:center;">
+      <svg width="36" height="36" viewBox="-12 -12 24 24" aria-hidden="true">
+        <path d="M0,-8.5 C4.6,-2.2 7.2,1.6 7.2,5 A7.2,7.2 0 1 1 -7.2,5 C-7.2,1.6 -4.6,-2.2 0,-8.5 Z" fill="#C9A876"></path>
+      </svg>
+      <h2 style="margin:0;font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:22px;line-height:28px;letter-spacing:-0.01em;color:var(--text);">Supprimer cette dégustation ?</h2>
+      <p style="margin:0;font-size:15.5px;line-height:25px;color:var(--text-secondary);">« {{ confirmName }} » quittera ton carnet pour de bon.</p>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:8px;">
+        <button onClick="{{ cancelDelete }}"
+          style="background:transparent;color:var(--secondary-text);border:1.5px solid var(--secondary-border);border-radius:999px;padding:12px 24px;font-family:'Nunito Sans','Segoe UI',Arial,sans-serif;font-weight:800;font-size:14.5px;cursor:pointer;"
+          style-hover="background:var(--secondary-hover-bg);"
+          style-focus="outline:2px solid #C9A876;outline-offset:2px;">Annuler</button>
+        <button onClick="{{ confirmDelete }}"
+          style="background:var(--primary);color:var(--on-primary);border:none;border-radius:999px;padding:12px 24px;font-family:'Nunito Sans','Segoe UI',Arial,sans-serif;font-weight:800;font-size:14.5px;cursor:pointer;"
+          style-hover="background:var(--primary-hover);"
+          style-focus="outline:2px solid #C9A876;outline-offset:2px;">Supprimer</button>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+<!-- Modale ajout/édition -->
+<sc-if value="{{ modalOpen }}" hint-placeholder-val="{{ false }}">
+  <div onClick="{{ closeModal }}" style="position:fixed;inset:0;background:var(--overlay);display:flex;align-items:center;justify-content:center;padding:20px;z-index:50;">
+    <div onClick="{{ stopClick }}" role="dialog" aria-label="Ajouter une dégustation" style="background:var(--surface);border-radius:16px;box-shadow:var(--shadow);max-width:480px;width:100%;padding:32px;display:flex;flex-direction:column;gap:20px;max-height:90vh;overflow:auto;">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+        <h2 style="margin:0;font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:26px;line-height:32px;letter-spacing:-0.01em;color:var(--text);">{{ modalTitle }}</h2>
+        <button onClick="{{ closeModal }}" aria-label="Fermer"
+          style="background:transparent;border:none;color:var(--text-secondary);font-size:20px;cursor:pointer;padding:6px 10px;border-radius:999px;line-height:1;"
+          style-hover="background:var(--border);"
+          style-focus="outline:2px solid #C9A876;outline-offset:2px;">✕</button>
+      </div>
+
+      <label style="display:flex;flex-direction:column;gap:8px;">
+        <span style="font-size:12.5px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-secondary);">Nom du vin</span>
+        <input type="text" value="{{ formName }}" onChange="{{ setFormName }}" placeholder="Ex. Sancerre 2022"
+          style="background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:11px 16px;font-family:'Nunito Sans','Segoe UI',Arial,sans-serif;font-size:15.5px;color:var(--text);outline:none;"
+          style-focus="border-color:#C9A876;">
+      </label>
+
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <span style="font-size:12.5px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-secondary);">Type</span>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <sc-for list="{{ typeChoices }}" as="tc" hint-placeholder-count="4">
+            <sc-if value="{{ tc.selected }}" hint-placeholder-val="{{ false }}">
+              <button onClick="{{ tc.select }}" style="background:var(--primary);color:var(--on-primary);border:1.5px solid var(--primary);border-radius:999px;padding:7px 16px;font-family:'Nunito Sans','Segoe UI',Arial,sans-serif;font-weight:700;font-size:13.5px;cursor:pointer;" style-focus="outline:2px solid #C9A876;outline-offset:2px;">{{ tc.label }}</button>
+            </sc-if>
+            <sc-if value="{{ tc.unselected }}" hint-placeholder-val="{{ true }}">
+              <button onClick="{{ tc.select }}" style="background:var(--surface);color:var(--text);border:1.5px solid var(--border);border-radius:999px;padding:7px 16px;font-family:'Nunito Sans','Segoe UI',Arial,sans-serif;font-weight:700;font-size:13.5px;cursor:pointer;" style-hover="border-color:#C9A876;" style-focus="outline:2px solid #C9A876;outline-offset:2px;">{{ tc.label }}</button>
+            </sc-if>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <span style="font-size:12.5px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-secondary);">Ta note</span>
+        <div style="display:flex;gap:6px;">
+          <sc-for list="{{ formStars }}" as="fs" hint-placeholder-count="5">
+            <button onClick="{{ fs.set }}" aria-label="{{ fs.aria }}" style="background:transparent;border:none;padding:0;cursor:pointer;line-height:0;border-radius:999px;" style-focus="outline:2px solid #C9A876;outline-offset:2px;">
+              <sc-if value="{{ fs.filled }}" hint-placeholder-val="{{ false }}">
+                <svg width="24" height="24" viewBox="0 0 24 24"><path d="M12 2l2.9 6.2 6.6.8-4.9 4.6 1.3 6.5-5.9-3.3-5.9 3.3 1.3-6.5-4.9-4.6 6.6-.8z" fill="{{ formStarColor }}"></path></svg>
+              </sc-if>
+              <sc-if value="{{ fs.empty }}" hint-placeholder-val="{{ true }}">
+                <svg width="24" height="24" viewBox="0 0 24 24"><path d="M12 2l2.9 6.2 6.6.8-4.9 4.6 1.3 6.5-5.9-3.3-5.9 3.3 1.3-6.5-4.9-4.6 6.6-.8z" fill="none" stroke="#C9A876" stroke-width="1.8"></path></svg>
+              </sc-if>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <span style="font-size:12.5px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-secondary);">Tu rachèterais ?</span>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <sc-for list="{{ rebuyChoices }}" as="rc" hint-placeholder-count="3">
+            <sc-if value="{{ rc.selected }}" hint-placeholder-val="{{ false }}">
+              <button onClick="{{ rc.select }}" style="background:var(--primary);color:var(--on-primary);border:1.5px solid var(--primary);border-radius:999px;padding:7px 16px;font-family:'Nunito Sans','Segoe UI',Arial,sans-serif;font-weight:700;font-size:13.5px;cursor:pointer;" style-focus="outline:2px solid #C9A876;outline-offset:2px;">{{ rc.label }}</button>
+            </sc-if>
+            <sc-if value="{{ rc.unselected }}" hint-placeholder-val="{{ true }}">
+              <button onClick="{{ rc.select }}" style="background:var(--surface);color:var(--text);border:1.5px solid var(--border);border-radius:999px;padding:7px 16px;font-family:'Nunito Sans','Segoe UI',Arial,sans-serif;font-weight:700;font-size:13.5px;cursor:pointer;" style-hover="border-color:#C9A876;" style-focus="outline:2px solid #C9A876;outline-offset:2px;">{{ rc.label }}</button>
+            </sc-if>
+          </sc-for>
+        </div>
+      </div>
+
+      <label style="display:flex;flex-direction:column;gap:8px;max-width:180px;">
+        <span style="font-size:12.5px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-secondary);">Prix (€)</span>
+        <input type="text" inputMode="decimal" value="{{ formPrice }}" onChange="{{ setFormPrice }}" placeholder="Ex. 12,50"
+          style="background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:11px 16px;font-family:'Nunito Sans','Segoe UI',Arial,sans-serif;font-size:15.5px;color:var(--text);outline:none;"
+          style-focus="border-color:#C9A876;">
+      </label>
+
+      <label style="display:flex;flex-direction:column;gap:8px;">
+        <span style="font-size:12.5px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-secondary);">Un mot sur ce vin</span>
+        <textarea value="{{ formNote }}" onChange="{{ setFormNote }}" rows="3" placeholder="Ce qui t'a plu, avec quoi tu l'as bu..."
+          style="background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:11px 16px;font-family:'Nunito Sans','Segoe UI',Arial,sans-serif;font-size:15.5px;line-height:25px;color:var(--text);outline:none;resize:vertical;"
+          style-focus="border-color:#C9A876;"></textarea>
+      </label>
+
+      <div style="display:flex;gap:12px;justify-content:flex-end;flex-wrap:wrap;">
+        <button onClick="{{ closeModal }}"
+          style="background:transparent;color:var(--secondary-text);border:1.5px solid var(--secondary-border);border-radius:999px;padding:12px 24px;font-family:'Nunito Sans','Segoe UI',Arial,sans-serif;font-weight:800;font-size:14.5px;cursor:pointer;"
+          style-hover="background:var(--secondary-hover-bg);"
+          style-focus="outline:2px solid #C9A876;outline-offset:2px;">Annuler</button>
+        <button onClick="{{ saveWine }}"
+          style="background:var(--primary);color:var(--on-primary);border:none;border-radius:999px;padding:12px 24px;font-family:'Nunito Sans','Segoe UI',Arial,sans-serif;font-weight:800;font-size:14.5px;cursor:pointer;"
+          style-hover="background:var(--primary-hover);"
+          style-focus="outline:2px solid #C9A876;outline-offset:2px;">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+</sc-if>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    loggedIn: false,
+    authScreen: 'login',
+    profileOpen: false,
+    theme: 'clair',
+    filter: 'Tous',
+    query: '',
+    modalOpen: false,
+    editingId: null,
+    confirmDeleteId: null,
+    formName: '',
+    formType: 'Rouge',
+    formRating: 3,
+    formRebuy: 'Oui',
+    formNote: '',
+    formPrice: '',
+    fabExpanded: true,
+    wines: [
+      { id: 1, name: 'Saint-Émilion 2019', type: 'Rouge', region: 'Bordeaux', price: '24,90', rating: 5, rebuy: 'Oui', note: 'Un vrai régal pour un dîner entre amis.' },
+      { id: 2, name: "Crémant d'Alsace brut", type: 'Champagne', region: 'Alsace', price: '9,50', rating: 4, rebuy: 'Oui', note: "Parfait pour l'apéro, bulles fines et joyeuses." },
+      { id: 3, name: 'Sancerre 2022', type: 'Blanc', region: 'Loire', price: '16,00', rating: 4, rebuy: 'Peut-être', note: 'Très frais, super avec un plateau de fromages.' },
+      { id: 4, name: 'Champagne brut nature', type: 'Champagne', region: 'Champagne', price: '32,00', rating: 3, rebuy: 'Non', note: 'Un peu trop sec à mon goût, mais élégant.' },
+      { id: 5, name: 'Côtes-de-Provence rosé 2023', type: 'Rosé', region: 'Provence', price: '11,20', rating: 4, rebuy: 'Oui', note: "L'été dans un verre, à refaire dès qu'il fait beau." },
+      { id: 6, name: 'Chinon 2021', type: 'Rouge', region: 'Loire', price: '8,90', rating: 3, rebuy: 'Peut-être', note: 'Léger et facile à boire, bon rapport qualité-prix.' },
+      { id: 7, name: 'Mâcon-Villages 2022', type: 'Blanc', region: 'Bourgogne', price: '12,40', rating: 2, rebuy: 'Non', note: "Pas désagréable, mais il ne m'a pas marqué." }
+    ]
+  };
+
+  componentDidMount() {
+    this._lastY = window.scrollY;
+    this._idleTimer = null;
+    this._onScroll = () => {
+      const y = window.scrollY;
+      const delta = y - this._lastY;
+      if (delta > 4 && y > 80 && this.state.fabExpanded) {
+        this.setState({ fabExpanded: false });
+      } else if (delta < -4 && !this.state.fabExpanded) {
+        this.setState({ fabExpanded: true });
+      }
+      this._lastY = y;
+      clearTimeout(this._idleTimer);
+      this._idleTimer = setTimeout(() => {
+        if (!this.state.fabExpanded) this.setState({ fabExpanded: true });
+      }, 600);
+    };
+    window.addEventListener('scroll', this._onScroll, { passive: true });
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this._onScroll);
+    clearTimeout(this._idleTimer);
+  }
+
+  dotColor(type) {
+    return { Rouge: 'var(--primary)', Blanc: '#D9C08C', 'Rosé': '#E0A5A0', Champagne: 'var(--accent)' }[type] || 'var(--accent)';
+  }
+
+  badgeStyle(rebuy) {
+    const base = { borderRadius: '999px', padding: '5px 14px', fontSize: '12.5px', fontWeight: 700, letterSpacing: '0.02em', display: 'inline-block' };
+    if (rebuy === 'Oui') return Object.assign(base, { background: 'var(--primary)', color: 'var(--on-primary)' });
+    if (rebuy === 'Non') return Object.assign(base, { background: 'var(--badge-non-bg)', color: 'var(--badge-non-text)' });
+    return Object.assign(base, { background: 'transparent', border: '1.5px solid #C9A876', color: 'var(--maybe-text)' });
+  }
+
+  renderVals() {
+    const { filter, query, wines, modalOpen, theme } = this.state;
+    const isDark = theme === 'sombre';
+    const q = query.trim().toLowerCase();
+    const filtered = wines.filter(w =>
+      (filter === 'Tous' || w.type === filter) &&
+      (!q || (w.name + ' ' + w.region + ' ' + w.type).toLowerCase().includes(q))
+    );
+
+    const shown = filtered.map(w => ({
+      name: w.name,
+      note: w.note,
+      typeLine: (w.type === 'Champagne' ? 'Champagne / Crémant' : w.type) + ' · ' + w.region,
+      dotColor: this.dotColor(w.type),
+      starColor: 'var(--primary)',
+      stars: [1, 2, 3, 4, 5].map(i => ({ filled: i <= w.rating, empty: i > w.rating })),
+      ratingLabel: w.rating + ' étoiles sur 5',
+      badgeText: w.rebuy,
+      badgeStyle: this.badgeStyle(w.rebuy),
+      priceLabel: w.price ? w.price + ' €' : '',
+      edit: () => this.setState({
+        modalOpen: true,
+        editingId: w.id,
+        formName: w.name,
+        formType: w.type,
+        formRating: w.rating,
+        formRebuy: w.rebuy,
+        formNote: w.note,
+        formPrice: w.price || ''
+      }),
+      remove: () => this.setState({ confirmDeleteId: w.id })
+    }));
+
+    return {
+      countLabel: wines.length + ' vins dégustés',
+      query,
+      setQuery: (e) => this.setState({ query: e.target.value }),
+      chips: ['Tous', 'Rouge', 'Blanc', 'Rosé', 'Champagne'].map(label => ({
+        label,
+        selected: filter === label,
+        unselected: filter !== label,
+        select: () => this.setState({ filter: label })
+      })),
+      wines: shown,
+      isEmpty: shown.length === 0,
+      modalOpen,
+      modalTitle: this.state.editingId ? 'Modifier la dégustation' : 'Nouvelle dégustation',
+      openModal: () => this.setState({ modalOpen: true, editingId: null, formName: '', formNote: '', formPrice: '', formRating: 3, formType: 'Rouge', formRebuy: 'Oui' }),
+      closeModal: () => this.setState({ modalOpen: false, editingId: null }),
+      formStarColor: 'var(--primary)',
+      fabExpanded: this.state.fabExpanded,
+      fabStyle: {
+        position: 'fixed',
+        left: '50%',
+        bottom: 'calc(20px + env(safe-area-inset-bottom))',
+        transform: this.state.fabExpanded ? 'translateX(-50%)' : 'translateX(-50%)',
+        width: this.state.fabExpanded ? 'auto' : '56px',
+        height: this.state.fabExpanded ? 'auto' : '56px',
+        padding: this.state.fabExpanded ? '14px 26px' : '0',
+        borderRadius: '999px',
+        background: 'var(--primary)',
+        border: 'none',
+        cursor: 'pointer',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '8px',
+        color: '#F5EDE4',
+        fontFamily: "'Nunito Sans','Segoe UI',Arial,sans-serif",
+        fontWeight: 800,
+        fontSize: '14.5px',
+        boxShadow: 'var(--fab-shadow)',
+        zIndex: 40,
+        transition: 'width 200ms ease, height 200ms ease, padding 200ms ease, background 200ms ease'
+      },
+      stopClick: (e) => e.stopPropagation(),
+      showLogin: !this.state.loggedIn && this.state.authScreen === 'login',
+      showSignup: !this.state.loggedIn && this.state.authScreen === 'signup',
+      showApp: this.state.loggedIn,
+      login: () => this.setState({ loggedIn: true, authScreen: 'login' }),
+      goToSignup: (e) => { e.preventDefault(); this.setState({ authScreen: 'signup' }); },
+      goToLogin: (e) => { e.preventDefault(); this.setState({ authScreen: 'login' }); },
+      initials: 'AM',
+      userName: 'Amateur du dimanche',
+      userEmail: 'toi@exemple.com',
+      profileOpen: this.state.profileOpen,
+      openProfile: () => this.setState({ profileOpen: true }),
+      closeProfile: () => this.setState({ profileOpen: false }),
+      openSettings: () => this.setState({ profileOpen: false }),
+      logout: () => this.setState({ profileOpen: false, loggedIn: false }),
+      themeAttr: theme,
+      isDark,
+      isLight: !isDark,
+      setClair: () => this.setState({ theme: 'clair' }),
+      setSombre: () => this.setState({ theme: 'sombre' }),
+      toggleTheme: () => this.setState({ theme: isDark ? 'clair' : 'sombre' }),
+      themeLabel: isDark ? 'Sombre' : 'Clair',
+      knobLeft: isDark ? '30px' : '3px',
+      sunColor: isDark ? 'var(--text-secondary)' : 'var(--accent)',
+      moonColor: isDark ? 'var(--accent)' : 'var(--text-secondary)',
+      confirmOpen: this.state.confirmDeleteId !== null,
+      confirmName: (wines.find(x => x.id === this.state.confirmDeleteId) || {}).name || '',
+      cancelDelete: () => this.setState({ confirmDeleteId: null }),
+      confirmDelete: () => this.setState(s => ({
+        wines: s.wines.filter(x => x.id !== s.confirmDeleteId),
+        confirmDeleteId: null
+      })),
+      formName: this.state.formName,
+      setFormName: (e) => this.setState({ formName: e.target.value }),
+      formNote: this.state.formNote,
+      setFormNote: (e) => this.setState({ formNote: e.target.value }),
+      formPrice: this.state.formPrice,
+      setFormPrice: (e) => this.setState({ formPrice: e.target.value }),
+      typeChoices: ['Rouge', 'Blanc', 'Rosé', 'Champagne'].map(label => ({
+        label,
+        selected: this.state.formType === label,
+        unselected: this.state.formType !== label,
+        select: () => this.setState({ formType: label })
+      })),
+      rebuyChoices: ['Oui', 'Non', 'Peut-être'].map(label => ({
+        label,
+        selected: this.state.formRebuy === label,
+        unselected: this.state.formRebuy !== label,
+        select: () => this.setState({ formRebuy: label })
+      })),
+      formStars: [1, 2, 3, 4, 5].map(i => ({
+        filled: i <= this.state.formRating,
+        empty: i > this.state.formRating,
+        aria: i + ' étoile' + (i > 1 ? 's' : ''),
+        set: () => this.setState({ formRating: i })
+      })),
+      saveWine: () => {
+        const name = this.state.formName.trim();
+        if (!name) return;
+        this.setState(s => {
+          const data = {
+            name,
+            type: s.formType,
+            rating: s.formRating,
+            rebuy: s.formRebuy,
+            note: s.formNote.trim() || 'Ajouté à mon carnet.',
+            price: s.formPrice.trim()
+          };
+          const wines = s.editingId
+            ? s.wines.map(x => x.id === s.editingId ? Object.assign({}, x, data) : x)
+            : [Object.assign({ id: Date.now(), region: 'Ma cave' }, data), ...s.wines];
+          return {
+            wines,
+            modalOpen: false,
+            editingId: null,
+            formName: '', formNote: '', formPrice: '', formRating: 3, formType: 'Rouge', formRebuy: 'Oui'
+          };
+        });
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>
